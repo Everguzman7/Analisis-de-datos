@@ -29,6 +29,8 @@ Resumen inicial:
 .
 ├── data/
 │   └── Vista_Resultados_unicos_Saber_11_20260521.csv
+├── dashboard/
+│   └── app.py
 ├── figures/
 │   └── graficos generados por el analisis
 ├── notebooks/
@@ -67,6 +69,12 @@ python src/eda_saber11.py
 python src/train_model.py
 ```
 
+4. Ejecutar dashboard (Streamlit):
+
+```bash
+streamlit run dashboard/app.py
+```
+
 ## Modelo propuesto
 
 Se plantea un modelo de clasificacion con scikit-learn:
@@ -84,4 +92,6 @@ Se plantea un modelo de clasificacion con scikit-learn:
 - Codigo documentado: `src/`.
 - Notebooks guia: `notebooks/`.
 - Resultados del modelo: `outputs/`.
-
+- Dashboard interactivo: `dashboard/app.py`.
+  - Incluye filtros por departamento, municipio y naturaleza del colegio.
+  - Muestra resumen, EDA y métricas del modelo.
