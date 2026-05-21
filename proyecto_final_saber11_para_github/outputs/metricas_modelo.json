@@ -1,0 +1,23 @@
+{
+  "target": "PUNT_GLOBAL >= 300",
+  "total_registros_modelo": 23474,
+  "registros_entrenamiento": 18779,
+  "registros_prueba": 4695,
+  "clase_positiva_puntaje_alto": 6094,
+  "porcentaje_clase_positiva": 25.96,
+  "accuracy": 0.6948,
+  "precision": 0.4455,
+  "recall": 0.7178,
+  "f1": 0.5498,
+  "matriz_confusion": [
+    [
+      2387,
+      1089
+    ],
+    [
+      344,
+      875
+    ]
+  ],
+  "reporte_clasificacion": "              precision    recall  f1-score   support\n\n     No alto       0.87      0.69      0.77      3476\n        Alto       0.45      0.72      0.55      1219\n\n    accuracy                           0.69      4695\n   macro avg       0.66      0.70      0.66      4695\nweighted avg       0.76      0.69      0.71      4695\n"
+}
