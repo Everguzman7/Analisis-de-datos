@@ -50,11 +50,11 @@ function addSlide(title, subtitle, bodyNodes) {
         }),
         subtitle
           ? text(subtitle, {
-              name: "subtitle",
-              width: wrap(1280),
-              height: hug,
-              style: { fontSize: 28, color: colors.muted },
-            })
+            name: "subtitle",
+            width: wrap(1280),
+            height: hug,
+            style: { fontSize: 28, color: colors.muted },
+          })
           : rule({ name: "title-rule", width: fixed(220), stroke: colors.green, weight: 6 }),
         ...bodyNodes,
       ],
@@ -273,6 +273,58 @@ try {
   );
 } catch (error) {
   console.warn("No se pudo exportar preview PNG:", error.message);
+}
+
+// Intento robusto: exportar cada diapositiva por separado usando varias APIs/variantes.
+try {
+  const n = presentation.slides ? presentation.slides.length : 0;
+  for (let i = 0; i < n; i++) {
+    let outBuffer = null;
+
+    // 1) Si el slide tiene método `export`, usarlo.
+    try {
+      const slide = presentation.slides[i];
+      if (slide && typeof slide.export === "function") {
+        const out = await slide.export({ format: "png" });
+        outBuffer = Buffer.from(await out.arrayBuffer());
+      }
+    } catch (e) {
+      // ignore and probar otras variantes
+    }
+
+    // 2) Intentar variantes sobre presentation.export
+    if (!outBuffer) {
+      const variants = [
+        { format: "png", page: i },
+        { format: "png", index: i },
+        { format: "png", slide: i + 1 },
+        { format: "png", pages: [i] },
+      ];
+      for (const opt of variants) {
+        try {
+          const out = await presentation.export(opt);
+          if (out) {
+            outBuffer = Buffer.from(await out.arrayBuffer());
+            break;
+          }
+        } catch (e) {
+          // probar siguiente variante
+        }
+      }
+    }
+
+    // 3) Si conseguimos un buffer, escribirlo con numeracion.
+    if (outBuffer) {
+      const name = `presentacion/slide_${String(i + 1).padStart(2, "0")}.png`;
+      try {
+        await fs.writeFile(name, outBuffer);
+      } catch (e) {
+        console.warn("No se pudo escribir:", name, e.message);
+      }
+    }
+  }
+} catch (e) {
+  console.warn("Export por diapositiva fallido:", e.message);
 }
 
 console.log("presentacion/presentacion_final_saber11.pptx");
