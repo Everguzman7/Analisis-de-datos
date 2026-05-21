@@ -1,0 +1,11 @@
+# Ignore generated presentation artifacts
+proyecto_final_saber11_para_github/presentacion/*.png
+proyecto_final_saber11_para_github/presentacion/*.pdf
+proyecto_final_saber11_para_github/presentacion/slide-*.png
+
+# Ignore Python cache
+__pycache__/
+*.py[cod]
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
